@@ -28,8 +28,30 @@ const onContainerClick = (e) => {
   if (e.target.classList.contains("gallery")) return;
   const source = e.target.dataset.source;
 
-  const instance = basicLightbox.create(`
-    <img src="${source}"width="800" height="600">`);
+  const instance = basicLightbox.create(
+    `
+    <img src="${source}"width="800" height="600" style= "border-radius: 30px">`,
+
+    {
+      onShow: () => {
+        // console.log("add listener ");
+        document.addEventListener("keydown", onKeydownEsc);
+      },
+
+      onClose: () => {
+        // console.log("remove listener ");
+        document.removeEventListener("keydown", onKeydownEsc);
+      },
+    }
+  );
+  // instance.show();
+
+  const onKeydownEsc = (e) => {
+    // console.log(e.code);
+    if (e.code === "Escape") {
+      instance.close();
+    }
+  };
 
   instance.show();
 };
